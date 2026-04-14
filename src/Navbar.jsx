@@ -1,11 +1,11 @@
 function Navbar() {
   return (
     <nav>
-      <button>All</button>
-      <button>Poems</button>
-      <button>Fiction</button>
-      <button>Bible</button>
-      <button>Others</button>
+      <button>ሁሉም / All</button>
+      <button>ግጥሞች / Poems</button>
+      <button>ልቦልድ / Fiction</button>
+      <button>መጽሐፍ ቅዱስ / Bible</button>
+      <button>ሌሎች / Others</button>
     </nav>
   );
 }

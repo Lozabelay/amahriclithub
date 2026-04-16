@@ -4,6 +4,7 @@ import Header from "./Header";
 import Navbar from "./Navbar";
 import BookCard from "./BookCard";
 import Landing from "./Landing"; // <-- NEW: Import landing page
+import BookReader from "./BookReader"; // <-- NEW: Import the book reader modal
 
 const books = [
   // ... keep your exact same 8 books here ...
@@ -65,33 +66,53 @@ const books = [
   }
 ];
 
-function App() {
-  // THE LIGHT SWITCH!
-  // Starts as TRUE (Landing page shows)
-  const [showLanding, setShowLanding] = useState(true);
+// ... keep your imports and books data exactly the same at the top ...
 
-  // If switch is ON, show Landing Page
+function App() {
+  // Switches
+  const [showLanding, setShowLanding] = useState(true);
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  
+  // NEW: Which book is being read? (starts as null)
+  const [selectedBook, setSelectedBook] = useState(null);
+
   if (showLanding) {
     return <Landing onStarted={() => setShowLanding(false)} />;
   }
 
-  // If switch is OFF, show Main Website
+  const booksToShow = books.filter((book) => {
+    const matchesCategory = activeCategory === "all" || book.category === activeCategory;
+    const matchesSearch = 
+      book.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      book.author.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
   return (
-    // We wrap the main site in a div to give it a WHITE background
     <div className="main-app">
-      <Header />
-      <Navbar />
+      <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+      
+      <Navbar 
+        activeCategory={activeCategory} 
+        onCategoryChange={setActiveCategory} 
+      />
+      
       <main>
-        {books.map((book) => (
+        {booksToShow.map((book) => (
           <BookCard
             key={book.id}
-            title={book.title}
-            author={book.author}
-            category={book.category}
-            image={book.image}
+            book={book}               // NEW: Pass the whole book object
+            onRead={setSelectedBook}  // NEW: Pass the function to open modal
           />
         ))}
       </main>
+
+      {/* NEW: The Modal */}
+      <BookReader 
+        book={selectedBook} 
+        onClose={() => setSelectedBook(null)} 
+      />
     </div>
   );
 }

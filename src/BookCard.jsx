@@ -1,5 +1,4 @@
-function BookCard(props) {
-  // Translate categories to Amharic/English
+function BookCard({ book, onRead }) { // Notice we receive 'book' and 'onRead' now
   const categoryNames = {
     poem: "ግጥም / Poem",
     fiction: "ልቦልድ / Fiction",
@@ -9,11 +8,15 @@ function BookCard(props) {
 
   return (
     <div className="book-card">
-      <img src={props.image} alt={props.title} />
-      <span className="category">{categoryNames[props.category]}</span>
-      <h3>{props.title}</h3>
-      <p className="author">by {props.author}</p>
-      <button className="read-btn">አንብብ ነፃ | Read Free</button>
+      <img src={book.image} alt={book.title} />
+      <span className="category">{categoryNames[book.category]}</span>
+      <h3>{book.title}</h3>
+      <p className="author">by {book.author}</p>
+      
+      {/* NEW: Add onClick to the button */}
+      <button className="read-btn" onClick={() => onRead(book)}>
+        አንብብ ነፃ | Read Free
+      </button>
     </div>
   );
 }
